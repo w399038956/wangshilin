@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <script type="text/javascript" src="js/jquery-1.11.1-min.js"></script>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>用户列表</title>
+    <script type="text/javascript">
+        var v_pageNo = 1;
+        var v_pageSize = 3;
+        var v_pageCount = 0;
+
+        $(function () {
+            userPaging(v_pageNo, v_pageSize);
+        })
+
+        //分页查询发起ajax请求
+        function userPaging(p_pageNo, p_pageSize) {
+            $.ajax({
+                url: "/user/list",
+                data: {
+                    pageNo: p_pageNo,
+                    pageSize: p_pageSize
+                },
+                type: "post",
+                success: function (resp) {
+                    // $("#userBody").html("");
+                    var htmlStr = "";
+                    $.each(resp, function (i, n) {
+                        htmlStr += "<tr><td>" + n.loginName + "</td><td>" + n.realName + "</td><td>" + n.phone + "</td><td>" + n.createTime + "</td></tr>"
+                    });
+                    $("#userBody").html(htmlStr);
+                    v_pageNo = resp.page.pageNo;
+                    v_pageSize = resp.page.pageSize;
+                    v_pageCount = resp.page.pageCount;
+                }
+            })
+        }
+    </script>
+</head>
+<body>
+<div>
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <td>用户名</td>
+            <td>真实姓名</td>
+            <td>电话</td>
+            <td>注册日期</td>
+        </tr>
+        </thead>
+        <tbody id="userBody">
+
+        </tbody>
+    </table>
+    <a href="javascript:void(0)" onclick="pre()">上一页</a>
+    <a href="javascript:void(0)" onclick="next()">下一页</a>
+</div>
+</body>
+</html>

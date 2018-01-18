@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <link href="bootstrap/css/bootstrap-theme.css" rel="stylesheet"/>
+    <link href="bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" />
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet"/>
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <script src="js/jquery-1.11.1-min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+
+    <title>登录页面</title>
+    <!--<style>-->
+        <!--body{background-color:#7373B9}-->
+    <!--</style>-->
+    <script type="text/javascript">
+        //登录按钮点击事件
+        function testClick() {
+            alert("hello!");
+            window.location.href="http://localhost:8080";
+        };
+
+        //注册模态窗口保存按钮点击事件
+        $("#bc").click(function(){
+            //alert(new Date().getTime());
+            var loginAct = $("#create-loginActNo").val();
+            var name = $("#create-username").val();
+            var loginPwd = $("#create-loginPwd").val();
+            var email = $("#create-email").val();
+            var expireTime = $("#create-expireTime").val();
+            var lockStatus = $("#create-lockStatus").val();
+            var deptNo = $("#create-org").val();//部门编号
+            var allowIps = $("#create-allowIps").val();
+
+            $.post(
+                "user/save.do?aaa="+new Date().getTime(),
+                {"mnum":Math.random(),"loginAct":loginAct,"name":name,"loginPwd":loginPwd,"email":email,"expireTime":expireTime,"lockStatus":lockStatus,"deptNo":deptNo,"allowIps":allowIps},
+                function(data){
+
+                    $("#createUserModal").modal("hide");
+
+                    pageNo = 1;
+                    pageList();
+                }
+
+            )
+
+        })
+    </script>
+</head>
+<body>
+    <div style="position: absolute; top: 50px; left: 150px; height: 100%;">
+        <img src="image/pexels-photo-803194.jpeg" class="img-circle" style="width: 40%; height: 60%; position: relative; top: 80px;">
+    </div>
+    <div id="top" style="height: 40px; background-color: white; width: 100%;">
+        <div style="position: absolute; top: 5px; left: 0px; font-size: 20px; font-style: normal; font-weight: 400; color: #6C6C6C; font-family: 'times new roman'">&nbsp;&nbsp;&nbsp;beijing&nbsp;<span style="font-size: 12px;">&copy;2018&nbsp;wangshilin</span></div>
+    </div>
+
+    <div style="position: absolute; top: 120px; right: 100px;width:450px;height:400px;border:1px solid #D5D5D5">
+        <div style="position: absolute; top: 0px; right: 60px;">
+            <div class="page-header" style="color: #6C6C6C">
+                <h1 >登录</h1>
+            </div>
+            <form class="form-horizontal" role="form">
+                <div class="form-group form-group-lg">
+                    <div style="width: 350px;">
+                        <input class="form-control" type="text" placeholder="用户名" id="act">
+                    </div>
+                    <div style="width: 350px; position: relative;top: 20px;">
+                        <input class="form-control" type="password" placeholder="密码" id="pwd">
+                    </div>
+                    <div class="checkbox"  style="position: relative;top: 30px; left: 10px;">
+                        <label id="myMsg" style="color: #FFFFFF">
+                            <font color="red"><span id="msg"></span></font>
+                        </label>
+                    </div>
+                </div>
+            </form>
+            <button type="button" class="btn btn-info" style="width: 110px; height: 38px;" onclick="testClick()"><span class="glyphicon glyphicon-user"></span> &nbsp;&nbsp;&nbsp;登录</button>
+            <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#createUserModal" style="width: 110px; height: 38px;"><span class="glyphicon glyphicon-plus"></span> &nbsp;&nbsp;&nbsp;注册</button>
+            <!--<a href="#createUserModal" class="btn btn-default btn-lg active" role="button" style="width: 160px;background-color: white">注册</a>-->
+            <!--<button class="btn btn-primary"  style="width: 175px;" id="d1">登录</button>-->
+            <!--<button class="btn btn-primary"  style="width: 175px;" id="d2">注册</button>-->
+        </div>
+    </div>
+
+    <!-- 注册用户的模态窗口 -->
+    <div class="modal fade" id="createUserModal" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document" style="width: 90%;">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">用户注册</h4>
+                </div>
+                <div class="modal-body">
+
+                    <form class="form-horizontal" role="form">
+
+                        <div class="form-group">
+                            <label for="create-loginActNo" class="col-sm-2 control-label">登录帐号<span style="font-size: 15px; color: red;">*</span></label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="text" class="form-control" id="create-loginActNo">
+                            </div>
+                            <label for="create-username" class="col-sm-2 control-label">真实姓名</label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="text" class="form-control" id="create-username">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create-loginPwd" class="col-sm-2 control-label">登录密码<span style="font-size: 15px; color: red;">*</span></label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="password" class="form-control" id="create-loginPwd">
+                            </div>
+                            <label for="create-email" class="col-sm-2 control-label">邮箱</label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="text" class="form-control" id="create-email">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create-confirmPwd" class="col-sm-2 control-label">确认密码<span style="font-size: 15px; color: red;">*</span></label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="password" class="form-control" id="create-confirmPwd">
+                            </div>
+
+                            <label for="create-expireTime" class="col-sm-2 control-label">地址</label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="text" class="form-control" id="create-expireTime">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create-lockStatus" class="col-sm-2 control-label">性别</label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <select class="form-control" id="create-lockStatus">
+                                    <option disabled="disabled">请选择性别</option>
+                                    <option>男</option>
+                                    <option>女</option>
+                                </select>
+                            </div>
+                            <label for="create-org" class="col-sm-2 control-label">职业<span style="font-size: 15px; color: red;">*</span></label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="text" class="form-control" id="create-org" placeholder="输入职业名称">
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="create-allowIps" class="col-sm-2 control-label">备注</label>
+                            <div class="col-sm-10" style="width: 300px;">
+                                <input type="text" class="form-control" id="create-allowIps" style="width: 280%" placeholder="请输入备注信息">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-primary" id="bc">确认注册</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
